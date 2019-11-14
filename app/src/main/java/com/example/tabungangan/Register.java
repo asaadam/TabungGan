@@ -23,9 +23,6 @@ import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
-import java.util.HashMap;
-import java.util.Map;
-
 
 public class Register extends AppCompatActivity implements View.OnClickListener {
 
@@ -116,12 +113,10 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
-                            Map<String, Object> userAdded = new HashMap<>();
-                            userAdded.put("name", mNameField.getText().toString());
-                            userAdded.put("uid", user.getUid().toString());
-                            userAdded.put("saldo", 0);
+                            User newUser = new
+                                    User(mNameField.getText().toString(),user.getUid(),0);
                             db.collection("user")
-                                    .add(userAdded)
+                                    .add(newUser)
                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>()
                                     {
                                         @Override
@@ -130,7 +125,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                                             Log.d(TAG, "DocumentSnapshot added with ID: " +
                                                     documentReference.getId());
                                         Intent intent = new Intent
-                                                (Register.this,Login.class);
+                                                (Register.this,MainActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(intent);
                                         }
