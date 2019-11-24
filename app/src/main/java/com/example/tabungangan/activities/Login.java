@@ -1,4 +1,4 @@
-package com.example.tabungangan;
+package com.example.tabungangan.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.tabungangan.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.android.material.textfield.TextInputLayout;
@@ -85,7 +86,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 if (task.isSuccessful()){
                     login.setText(R.string.login);
                     FirebaseUser user = mAuth.getCurrentUser();
-                    Intent intent = new Intent(Login.this,MainActivity.class);
+                    Intent intent = new Intent(Login.this, MainActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -108,7 +109,7 @@ public class Login extends AppCompatActivity implements View.OnClickListener {
                 signIn(mEmailField.getText().toString(),mPasswordField.getText().toString());
                 break;
                 case R.id.button_register:
-                    Intent intent = new Intent(v.getContext(),Register.class);
+                    Intent intent = new Intent(v.getContext(), Register.class);
                     startActivity(intent);
                     break;
             }

@@ -1,4 +1,4 @@
-package com.example.tabungangan;
+package com.example.tabungangan.activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -12,6 +12,8 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.example.tabungangan.R;
+import com.example.tabungangan.models.User;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -125,7 +127,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                                             Log.d(TAG, "DocumentSnapshot added with ID: " +
                                                     documentReference.getId());
                                         Intent intent = new Intent
-                                                (Register.this,MainActivity.class);
+                                                (Register.this, MainActivity.class);
                                         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                         startActivity(intent);
                                         }
@@ -152,7 +154,7 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                 createAccount(mEmailField.getText().toString(),mPasswordField.getText().toString());
                 break;
             case R.id.button_login :
-                Intent intent = new Intent(v.getContext(),Login.class);
+                Intent intent = new Intent(v.getContext(), Login.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                 startActivity(intent);
                 break;

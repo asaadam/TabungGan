@@ -1,4 +1,4 @@
-package com.example.tabungangan;
+package com.example.tabungangan.models;
 public class User {
     String nama,email,uuid;
     int saldo ;
