@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/navigation_ringkasan"
+        android:title="Ringkasan" />
+
+    <item
+        android:id="@+id/navigation_transaksi"
+        android:title="Transaksi" />
+
+    <item
+        android:id="@+id/navigation_target"
+        android:title="Target" />
+
+    <item
+        android:id="@+id/navigation_profil"
+        android:title="Profil" />
+</menu>
