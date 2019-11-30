@@ -10,5 +10,8 @@
     <string name="already">Already Have Account?</string>
     <string name="ok">Oke</string>
     <string name="batal">Batal</string>
+    <string name="pilih_bulan_tahun">Pilih Bulan dan Tahun</string>
+    <string name="cari">Cari</string>
+
 
 </resources>
