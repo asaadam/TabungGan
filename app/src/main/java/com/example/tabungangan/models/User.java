@@ -1,7 +1,11 @@
 package com.example.tabungangan.models;
+
+import com.google.firebase.auth.FirebaseUser;
+
 public class User {
-    String nama,email,uuid;
-    int saldo ;
+    private String nama,email,uuid;
+    private int saldo ;
+   private FirebaseUser user;
 
      public User(String nama, String email, String uuid, int saldo) {
          this.nama = nama;
@@ -10,15 +14,17 @@ public class User {
          this.saldo = saldo;
      }
 
-    public String getNama() { return nama; }
+     public User (FirebaseUser user){
+         this.user=user;
+     }
+
+    public String getNama() { return user.getDisplayName(); }
 
     public String getEmail() {
-        return email;
+        return user.getEmail();
     }
 
-    public String getUuid() { return uuid; }
+    public String getUuid() { return user.getUid(); }
 
-    public int getSaldo() {
-        return saldo;
-    }
+
 }

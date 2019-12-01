@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,23 +18,25 @@ import androidx.fragment.app.Fragment;
 
 import com.example.tabungangan.R;
 import com.example.tabungangan.activities.Login;
+import com.example.tabungangan.models.User;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 public class Profil extends Fragment implements View.OnClickListener {
-    Button mLogoutButton;
     private FirebaseAuth mAuth;
     private static final String TAG = "PROFIL";
-
-
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View myView =  inflater.inflate(R.layout.fragment_profil, container, false);
         mAuth = FirebaseAuth.getInstance();
-        mLogoutButton=myView.findViewById(R.id.button_logout);
+        User logged = new User(mAuth.getCurrentUser());
+        Button mLogoutButton=myView.findViewById(R.id.button_logout);
         mLogoutButton.setOnClickListener(this);
+        TextView tv_phoneNumber = myView.findViewById(R.id.tv_phoneNumber);
+        tv_phoneNumber.setText(logged.getEmail());
+        Log.d(TAG,logged.getEmail());
         return myView;
     }
 
