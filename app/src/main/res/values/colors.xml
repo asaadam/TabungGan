@@ -6,4 +6,9 @@
     <color name="white">#FFFFFF</color>
     <color name="blackLight">#4C4C4C</color>
     <color name="whiteSmoke">#F5F5F5</color>
+    <color name="grey">#E9EAEE</color>
+    <color name="yellow">#F8BA0F</color>
+    <color name="goodgrey">#535353</color>
+    <color name="blue">#293859</color>
+    <color name="lightgrey">#EEEEEE</color>
 </resources>
