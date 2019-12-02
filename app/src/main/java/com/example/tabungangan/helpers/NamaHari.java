@@ -3,6 +3,8 @@ package com.example.tabungangan.helpers;
 public class NamaHari {
     private String namaHari;
 
+    public NamaHari() {}
+
     public String getNamaHari(String hari){
 
         switch (hari){
@@ -15,7 +17,7 @@ public class NamaHari {
             case "Wednesday":
                 namaHari = "Rabu";
                 break;
-                case "Thursday":
+            case "Thursday":
                 namaHari = "Kamis";
                 break;
             case "Friday":
