@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -34,7 +33,9 @@ import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
 
+import java.text.NumberFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 public class Transaksi extends Fragment{
     private FirebaseAuth auth;
@@ -65,6 +66,9 @@ public class Transaksi extends Fragment{
     private int jumlahPemasukan;
     private int jumlahPengeluaran;
 
+    private Locale localeID;
+    private NumberFormat formatRupiah;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -83,6 +87,9 @@ public class Transaksi extends Fragment{
         tahun = bundle.getString("tahun", tahunSekarang);
 
         auth = FirebaseAuth.getInstance();
+
+        localeID = new Locale("in", "ID");
+        formatRupiah = NumberFormat.getCurrencyInstance(localeID);
 
         tv_jumlah_pengeluaran = view.findViewById(R.id.tv_pengeluaran_nilai);
         tv_jumlah_pemasukan = view.findViewById(R.id.tv_pemasukan_nilai);
@@ -171,9 +178,9 @@ public class Transaksi extends Fragment{
                                 jumlahPemasukan = jumlahPemasukan + Integer.parseInt(tempJumlahPemasukan);
                             }
                         }
-                        tv_jumlah_pengeluaran.setText(Integer.toString(jumlahPengeluaran));
-                        tv_jumlah_pemasukan.setText(Integer.toString(jumlahPemasukan));
-                        tv_total_transaksi.setText(Integer.toString(jumlahPemasukan-jumlahPengeluaran));
+                        tv_jumlah_pengeluaran.setText(formatRupiah.format(jumlahPengeluaran));
+                        tv_jumlah_pemasukan.setText(formatRupiah.format(jumlahPemasukan));
+                        tv_total_transaksi.setText(formatRupiah.format(jumlahPemasukan-jumlahPengeluaran));
                     }
                 });
     }

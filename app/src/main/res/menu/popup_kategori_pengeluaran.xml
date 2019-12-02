@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+    <item
+        android:id="@+id/makanan"
+        android:title="Makanan"/>
+
+    <item
+        android:id="@+id/belanja"
+        android:title="Belanja"/>
+
+    <item
+        android:id="@+id/hobi"
+        android:title="Hobi"/>
+
+    <item
+        android:id="@+id/transportasi"
+        android:title="Transportasi"/>
+
+    <item
+        android:id="@+id/kesehatan"
+        android:title="Kesehatan"/>
+
+    <item
+        android:id="@+id/pendidikan"
+        android:title="Pendidikan"/>
+
+    <item
+        android:id="@+id/lainlain"
+        android:title="Lain-lain"/>
+</menu>

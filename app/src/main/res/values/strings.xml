@@ -19,4 +19,10 @@
     <string name="contact">Contact</string>
     <string name="logout">Logout</string>
 
+    <array name="kurir">
+        <item>Pilih Kurir</item>
+        <item>JNE REGULER</item>
+        <item>JNE YES</item>
+    </array>
+
 </resources>

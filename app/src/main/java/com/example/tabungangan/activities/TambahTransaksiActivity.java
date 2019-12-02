@@ -8,11 +8,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.Toast;
 
 import com.example.tabungangan.R;
@@ -66,6 +68,8 @@ public class TambahTransaksiActivity extends AppCompatActivity implements View.O
 
         btn_back_tambah_transaksi.setOnClickListener(this);
         et_tanggal.setOnClickListener(this);
+        et_tipe.setOnClickListener(this);
+        et_kategori.setOnClickListener(this);
         btn_simpan.setOnClickListener(this);
     }
 
@@ -78,6 +82,12 @@ public class TambahTransaksiActivity extends AppCompatActivity implements View.O
             case R.id.tanggal_field:
                 showDateDialog();
                 break;
+            case R.id.tipe_field:
+                showTipeDialog();
+                break;
+            case R.id.kategori_field:
+                showKategoriDialog();
+                break;
             case R.id.btn_simpan:
                 saveData();
                 break;
@@ -87,7 +97,7 @@ public class TambahTransaksiActivity extends AppCompatActivity implements View.O
     private void showDateDialog(){
         Calendar newCalendar = Calendar.getInstance();
 
-        datePickerDialog = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        datePickerDialog = new DatePickerDialog(this, R.style.DialogDatePickerTheme,new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int tahun, int bulan, int tanggal) {
                 Date dt = new Date(tahun, bulan, tanggal-1);
@@ -108,6 +118,37 @@ public class TambahTransaksiActivity extends AppCompatActivity implements View.O
         },newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
 
         datePickerDialog.show();
+    }
+
+    private void showKategoriDialog() {
+        String getTipe = et_tipe.getText().toString();
+        PopupMenu popup = new PopupMenu(TambahTransaksiActivity.this, et_tipe);
+        if(getTipe.equalsIgnoreCase("Pemasukan")){
+            popup.getMenuInflater().inflate(R.menu.popup_kategori_pemasukan, popup.getMenu());
+        }
+        else if(getTipe.equalsIgnoreCase("Pengeluaran")){
+            popup.getMenuInflater().inflate(R.menu.popup_kategori_pengeluaran, popup.getMenu());
+        }
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                et_kategori.setText(item.getTitle());
+                return true;
+            }
+        });
+        popup.show();
+    }
+
+    private void showTipeDialog() {
+        PopupMenu popup = new PopupMenu(TambahTransaksiActivity.this, et_tipe);
+        popup.getMenuInflater()
+                .inflate(R.menu.popup_tipe_transaksi, popup.getMenu());
+        popup.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener() {
+            public boolean onMenuItemClick(MenuItem item) {
+                et_tipe.setText(item.getTitle());
+                return true;
+            }
+        });
+        popup.show();
     }
 
     private void saveData(){
