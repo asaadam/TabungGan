@@ -12,7 +12,6 @@ public class TransaksiModel {
 
     public TransaksiModel() {}
 
-
     public TransaksiModel(String hari, String tanggal, String bulan, String tahun, String tipe, String kategori, String jumlah, String uuid) {
         this.hari = hari;
         this.tanggal = tanggal;

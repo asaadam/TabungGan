@@ -3,6 +3,7 @@ package com.example.tabungangan.activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import android.widget.FrameLayout;
 
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -18,6 +19,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     private BottomNavigationView bottomNavigation;
     private Fragment fragment;
+    private FrameLayout fragmentContainer;
 
     String dataFragment, bulan, tahun;
 

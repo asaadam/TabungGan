@@ -8,23 +8,44 @@
 
     <com.anychart.AnyChartView
         android:id="@+id/any_chart_view_pemasukan"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="40dp"
+        android:layout_width="275dp"
+        android:layout_height="275dp"
+        android:layout_marginTop="60dp"
+        app:layout_constraintBottom_toTopOf="@+id/any_chart_view_pengeluaran"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <com.anychart.AnyChartView
         android:id="@+id/any_chart_view_pengeluaran"
-        android:layout_width="300dp"
-        android:layout_height="300dp"
-        android:layout_marginTop="40dp"
-        android:layout_marginBottom="60dp"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_width="275dp"
+        android:layout_height="275dp"
+        android:layout_marginTop="36dp"
+        android:layout_marginBottom="20dp"
+        app:layout_constraintBottom_toTopOf="@+id/btn_bulan_tahun"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/any_chart_view_pemasukan" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_bulan_tahun"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="275dp"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="20dp"
+        android:layout_marginBottom="66dp"
+        android:paddingTop="8dp"
+        android:paddingBottom="8dp"
+        android:text="Pilih Tanggal"
+        android:textAllCaps="false"
+
+        android:textSize="16sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/any_chart_view_pengeluaran"
+        app:strokeColor="@color/colorPrimary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
     <!--    <?xml version="1.0" encoding="utf-8"?>-->
