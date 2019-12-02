@@ -29,8 +29,8 @@ import com.google.firebase.firestore.FirebaseFirestore;
 public class Register extends AppCompatActivity implements View.OnClickListener {
 
     private FirebaseAuth mAuth;
-    private EditText mPasswordField,mEmailField,mRePasswordField,mNameField;
-    private TextInputLayout mPasswordLayout,mEmailLayout,mRePassowrdLayout,mNameLayout;
+    private EditText mPasswordField,mEmailField,mRePasswordField,mNameField,mPhoneField;
+    private TextInputLayout mPasswordLayout,mEmailLayout,mRePassowrdLayout,mNameLayout,mPhoneLayout;
     private Button register;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static final String TAG = "EmailPasswordRegister";
@@ -39,11 +39,13 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
         //layout
+        mPhoneLayout=findViewById(R.id.phoneNumber_layout);
         mPasswordLayout=findViewById(R.id.password_layout);
         mRePassowrdLayout=findViewById(R.id.rePassword_layout);
         mNameLayout=findViewById(R.id.name_layout);
         mEmailLayout=findViewById(R.id.email_layout);
         //EditText
+        mPhoneField=findViewById(R.id.phoneNumber_field);
         mPasswordField=findViewById(R.id.password_field);
         mRePasswordField=findViewById(R.id.repassword_field);
         mEmailField=findViewById(R.id.email_field);
@@ -97,6 +99,15 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
         else{
             mNameLayout.setError(null);
         }
+        String phone = mPhoneField.getText().toString();
+        if(TextUtils.isEmpty(phone)){
+            mPhoneLayout.setError("Required");
+            valid=false;
+        }
+        else {
+            mNameLayout.setError(null);
+
+        }
 
         return valid;
     }
@@ -116,7 +127,17 @@ public class Register extends AppCompatActivity implements View.OnClickListener 
                         if (task.isSuccessful()) {
                             FirebaseUser user = mAuth.getCurrentUser();
                             User newUser = new
-                                    User(mNameField.getText().toString(),mEmailField.getText().toString(),user.getUid(),0);
+                                    User(mNameField
+                                    .getText()
+                                    .toString(),
+                                    mEmailField
+                                    .getText()
+                                            .toString(),
+                                    user.getUid(),
+                                    0,
+                                    mPhoneField
+                                            .getText()
+                                            .toString());
                             db.collection("user")
                                     .add(newUser)
                                     .addOnSuccessListener(new OnSuccessListener<DocumentReference>()

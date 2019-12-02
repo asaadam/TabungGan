@@ -9,36 +9,64 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.tabungangan.R;
 import com.example.tabungangan.activities.Login;
-import com.example.tabungangan.models.User;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class Profil extends Fragment implements View.OnClickListener {
     private FirebaseAuth mAuth;
-    private static final String TAG = "PROFIL";
+    private FirebaseUser user;
+    private FirebaseFirestore db;
+    private CollectionReference userCollection;
+
+    private Button mLogoutButton;
+    private TextView tv_nama;
+    private TextView tv_saldo;
+    private TextView tv_phoneNumber;
+    private TextView tv_email;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View myView =  inflater.inflate(R.layout.fragment_profil, container, false);
-        mAuth = FirebaseAuth.getInstance();
-        User logged = new User(mAuth.getCurrentUser());
-        Button mLogoutButton=myView.findViewById(R.id.button_logout);
-        mLogoutButton.setOnClickListener(this);
-        TextView tv_phoneNumber = myView.findViewById(R.id.tv_phoneNumber);
-        tv_phoneNumber.setText(logged.getEmail());
-        Log.d(TAG,logged.getEmail());
-        return myView;
+        return  inflater.inflate(R.layout.fragment_profil, container, false);
     }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
+        db = FirebaseFirestore.getInstance();
+        userCollection = db.collection("user");
+
+        getInformasiProfil();
+
+        mLogoutButton = view.findViewById(R.id.button_logout);
+
+        tv_nama = view.findViewById(R.id.tv_nama);
+        tv_saldo = view.findViewById(R.id.tv_saldo);
+        tv_phoneNumber = view.findViewById(R.id.tv_phoneNumber);
+        tv_email = view.findViewById(R.id.tv_email);
+
+        mLogoutButton.setOnClickListener(this);
+    }
+
 
 
     @Override
@@ -53,6 +81,21 @@ public class Profil extends Fragment implements View.OnClickListener {
                 activity.finish();
                 break;
         }
+    }
+
+    private void getInformasiProfil(){
+        userCollection.whereEqualTo("uuid",user.getUid())
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            tv_nama.setText((String) document.getData().get("nama"));
+                            tv_saldo.setText(Long.toString((Long) document.getData().get("saldo")));
+                            tv_email.setText((String) document.getData().get("email"));
+                            tv_phoneNumber.setText((String) document.getData().get("phoneNumber"));
+                        }
+                    }
+                });
     }
 
 }

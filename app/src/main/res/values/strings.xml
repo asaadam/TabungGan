@@ -18,6 +18,8 @@
     <string name="about_me">About Me</string>
     <string name="contact">Contact</string>
     <string name="logout">Logout</string>
+    <string name="submitwishlist">Masukan Wishmu</string>
+    <string name="wishlist">Masukkan Keinginan</string>
 
     <array name="kurir">
         <item>Pilih Kurir</item>
