@@ -1,30 +1,23 @@
 package com.example.tabungangan.models;
 
-import com.google.firebase.auth.FirebaseUser;
-
 public class User {
-    private String nama,email,uuid;
+    private String nama,email,uuid,phoneNumber;
     private int saldo ;
-   private FirebaseUser user;
-
-     public User(String nama, String email, String uuid, int saldo) {
+     public User(String nama, String email, String uuid, int saldo,String phoneNumber) {
          this.nama = nama;
          this.email = email;
          this.uuid = uuid;
          this.saldo = saldo;
+         this.phoneNumber=phoneNumber;
      }
 
-     public User (FirebaseUser user){
-         this.user=user;
-     }
-
-    public String getNama() { return user.getDisplayName(); }
+    public String getNama() { return nama; }
 
     public String getEmail() {
-        return user.getEmail();
+        return email;
     }
 
-    public String getUuid() { return user.getUid(); }
+    public String getUuid() { return uuid; }
 
-
+    public int getSaldo() { return saldo; }
 }
