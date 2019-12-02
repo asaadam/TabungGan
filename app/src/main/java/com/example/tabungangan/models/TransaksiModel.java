@@ -8,11 +8,12 @@ public class TransaksiModel {
     private String tipe;
     private String kategori;
     private String jumlah;
+    private String uuid;
 
     public TransaksiModel() {}
 
 
-    public TransaksiModel(String hari, String tanggal, String bulan, String tahun, String tipe, String kategori, String jumlah) {
+    public TransaksiModel(String hari, String tanggal, String bulan, String tahun, String tipe, String kategori, String jumlah, String uuid) {
         this.hari = hari;
         this.tanggal = tanggal;
         this.bulan = bulan;
@@ -20,15 +21,14 @@ public class TransaksiModel {
         this.tipe = tipe;
         this.kategori = kategori;
         this.jumlah = jumlah;
+        this.uuid = uuid;
     }
 
     public String getHari() {
         return hari;
     }
 
-    public String getTanggal() {
-        return tanggal;
-    }
+    public String getTanggal() { return tanggal; }
 
     public String getBulan() {
         return bulan;
@@ -49,4 +49,6 @@ public class TransaksiModel {
     public String getJumlah() {
         return jumlah;
     }
+
+    public String getUuid() { return uuid; }
 }

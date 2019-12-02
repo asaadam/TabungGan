@@ -1,11 +1,9 @@
 package com.example.tabungangan.fragments;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,12 +24,12 @@ import com.example.tabungangan.adapters.TransaksiAdapter;
 import com.example.tabungangan.helpers.MonthYearPicker;
 import com.example.tabungangan.models.TransaksiModel;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.CollectionReference;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
@@ -61,6 +59,9 @@ public class Transaksi extends Fragment{
     private String tempJumlahPengeluaran;
     private String tempJumlahPemasukan;
 
+    String bulanSekaran;
+    String tahunSekarang;
+
     private int jumlahPemasukan;
     private int jumlahPengeluaran;
 
@@ -74,6 +75,13 @@ public class Transaksi extends Fragment{
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        bulanSekaran = Integer.toString(Calendar.getInstance().get(Calendar.MONTH)+1);
+        tahunSekarang = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
+
+        Bundle bundle = this.getArguments();
+        bulan = bundle.getString("bulan", bulanSekaran);
+        tahun = bundle.getString("tahun", tahunSekarang);
+
         auth = FirebaseAuth.getInstance();
 
         tv_jumlah_pengeluaran = view.findViewById(R.id.tv_pengeluaran_nilai);
@@ -83,14 +91,11 @@ public class Transaksi extends Fragment{
         floating_btn_tambah_transaksi = view.findViewById(R.id.floating_btn_tambah_transaksi);
         recyclerView = view.findViewById(R.id.rv_transaksi_list);
 
-        bulan = Integer.toString(Calendar.getInstance().get(Calendar.MONTH)+1);
-        tahun = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
-
         btn_bulan_tahun.setText(bulan+"/"+tahun);
         tv_jumlah_pengeluaran.setTextColor(Color.RED);
         tv_jumlah_pemasukan.setTextColor(Color.parseColor("#7EC544"));
-        setupRecyclerView(bulan, tahun);
         setupJumlah(bulan,tahun);
+        setupRecyclerView(bulan, tahun);
 
         btn_bulan_tahun.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -153,27 +158,22 @@ public class Transaksi extends Fragment{
         transaksiRef.whereEqualTo("uuid",auth.getUid())
                 .whereEqualTo("bulan", bulan)
                 .whereEqualTo("tahun", tahun)
-                .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                if(document.getData().get("tipe").equals("Pengeluaran")){
-                                    tempJumlahPengeluaran = (String) document.getData().get("jumlah");
-                                    jumlahPengeluaran = jumlahPengeluaran + Integer.parseInt(tempJumlahPengeluaran);
-                                }
-                                else if(document.getData().get("tipe").equals("Pemasukan")){
-                                    tempJumlahPemasukan = (String) document.getData().get("jumlah");
-                                    jumlahPemasukan = jumlahPemasukan + Integer.parseInt(tempJumlahPemasukan);
-                                }
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+                            if(document.getData().get("tipe").equals("Pengeluaran")){
+                                tempJumlahPengeluaran = (String) document.getData().get("jumlah");
+                                jumlahPengeluaran = jumlahPengeluaran + Integer.parseInt(tempJumlahPengeluaran);
                             }
-                            tv_jumlah_pengeluaran.setText(Integer.toString(jumlahPengeluaran));
-                            tv_jumlah_pemasukan.setText(Integer.toString(jumlahPemasukan));
-                            tv_total_transaksi.setText(Integer.toString(jumlahPemasukan-jumlahPengeluaran));
-                        } else {
-                            Log.d("Error", "Error getting documents: ", task.getException());
+                            else if(document.getData().get("tipe").equals("Pemasukan")){
+                                tempJumlahPemasukan = (String) document.getData().get("jumlah");
+                                jumlahPemasukan = jumlahPemasukan + Integer.parseInt(tempJumlahPemasukan);
+                            }
                         }
+                        tv_jumlah_pengeluaran.setText(Integer.toString(jumlahPengeluaran));
+                        tv_jumlah_pemasukan.setText(Integer.toString(jumlahPemasukan));
+                        tv_total_transaksi.setText(Integer.toString(jumlahPemasukan-jumlahPengeluaran));
                     }
                 });
     }
