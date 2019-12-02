@@ -12,6 +12,8 @@
     <string name="batal">Batal</string>
     <string name="pilih_bulan_tahun">Pilih Bulan dan Tahun</string>
     <string name="cari">Cari</string>
+    <string name="wishlist">Masukkan Keinginan</string>
+    <string name="submitwishlist">Simpan Keinginan</string>
 
 
 </resources>
