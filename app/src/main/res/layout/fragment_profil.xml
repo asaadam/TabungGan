@@ -110,7 +110,7 @@
 
 
                 <TextView
-                    android:id="@+id/experiencebtn"
+                    android:id="@+id/tv_saldo"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
