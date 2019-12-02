@@ -25,20 +25,31 @@ import com.google.firebase.auth.FirebaseUser;
 public class Profil extends Fragment implements View.OnClickListener {
     private FirebaseAuth mAuth;
     private static final String TAG = "PROFIL";
+    private User logged;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View myView =  inflater.inflate(R.layout.fragment_profil, container, false);
         mAuth = FirebaseAuth.getInstance();
-        User logged = new User(mAuth.getCurrentUser());
-        Button mLogoutButton=myView.findViewById(R.id.button_logout);
-        mLogoutButton.setOnClickListener(this);
-        TextView tv_phoneNumber = myView.findViewById(R.id.tv_phoneNumber);
-        tv_phoneNumber.setText(logged.getEmail());
-        Log.d(TAG,logged.getEmail());
-        return myView;
+         logged = new User(mAuth.getCurrentUser());
+
+        return  inflater.inflate(R.layout.fragment_profil, container, false);
     }
+
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        Button mLogoutButton=view.findViewById(R.id.button_logout);
+        mLogoutButton.setOnClickListener(this);
+        TextView tv_nama = view.findViewById(R.id.tv_nama);
+        Log.d(TAG,logged.getNama());
+        TextView tv_phoneNumber = view.findViewById(R.id.tv_phoneNumber);
+        TextView tv_email = view.findViewById(R.id.tv_email);
+        tv_email.setText(logged.getEmail());
+    }
+
 
 
     @Override
