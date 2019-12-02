@@ -6,7 +6,6 @@ import androidx.fragment.app.Fragment;
 
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 
 import com.example.tabungangan.R;
 import com.example.tabungangan.fragments.Profil;
@@ -18,17 +17,26 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
     private BottomNavigationView bottomNavigation;
-    private FrameLayout fragmentContainer;
     private Fragment fragment;
+
+    String dataFragment, bulan, tahun;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        loadFragment(new Ringkasan());
+        dataFragment = "Ringkasan";
 
-        fragmentContainer = findViewById(R.id.fragment_container);
+        Bundle extras = getIntent().getExtras();
+        if(extras != null){
+            dataFragment = extras.getString("fragment");
+            bulan = extras.getString("bulan");
+            tahun = extras.getString("tahun");
+        }
+
+        fragmentToShow(dataFragment);
+
         bottomNavigation = findViewById(R.id.bottom_navigation);
 
         bottomNavigation.setOnNavigationItemSelectedListener(this);
@@ -54,11 +62,32 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         return loadFragment(fragment);
     }
 
+    private void fragmentToShow(String dataFragment){
+        switch (dataFragment){
+            case "Ringkasan":
+                loadFragment(new Ringkasan());
+                break;
+            case "Transaksi":
+                loadFragment(new Transaksi());
+                break;
+            case "Target":
+                loadFragment(new Target());
+                break;
+            case "Profil":
+                loadFragment(new Profil());
+                break;
+        }
+    }
+
     private boolean loadFragment(Fragment fragment) {
         if (fragment != null) {
             getSupportFragmentManager().beginTransaction()
                     .replace(R.id.fragment_container, fragment)
                     .commit();
+            Bundle bundle = new Bundle();
+            bundle.putString("bulan", bulan);
+            bundle.putString("tahun", tahun);
+            fragment.setArguments(bundle);
             return true;
         }
         return false;
