@@ -1,5 +1,6 @@
 package com.example.tabungangan.adapters;
 
+import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,11 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tabungangan.R;
+import com.example.tabungangan.helpers.NamaHari;
 import com.example.tabungangan.models.TransaksiModel;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
 public class TransaksiAdapter extends FirestoreRecyclerAdapter<TransaksiModel, TransaksiAdapter.TransaksiHolder> {
+
+    NamaHari namaHari = new NamaHari();
 
     public TransaksiAdapter(@NonNull FirestoreRecyclerOptions<TransaksiModel> options) {
         super(options);
@@ -21,11 +25,18 @@ public class TransaksiAdapter extends FirestoreRecyclerAdapter<TransaksiModel, T
 
     @Override
     protected void onBindViewHolder(@NonNull TransaksiHolder holder, int position, @NonNull TransaksiModel model) {
-        holder.textViewBulan.setText(model.getBulan());
-        holder.textViewTahun.setText(model.getTahun());
+        holder.textViewTanggal.setText(model.getTanggal());
+        holder.textViewBulanTahun.setText(model.getBulan()+"/"+model.getTahun());
+        holder.textViewHari.setText(namaHari.getNamaHari(model.getHari()));
         holder.textViewTipe.setText(model.getTipe());
         holder.textViewKategori.setText(model.getKategori());
         holder.textViewJumlah.setText(model.getJumlah());
+        if(model.getTipe().equals("Pengeluaran")){
+            holder.textViewJumlah.setTextColor(Color.RED);
+        }
+        else{
+            holder.textViewJumlah.setTextColor(Color.parseColor("#7EC544"));
+        }
     }
 
     @NonNull
@@ -38,8 +49,8 @@ public class TransaksiAdapter extends FirestoreRecyclerAdapter<TransaksiModel, T
 
     class TransaksiHolder extends RecyclerView.ViewHolder {
         TextView textViewTanggal;
-        TextView textViewBulan;
-        TextView textViewTahun;
+        TextView textViewBulanTahun;
+        TextView textViewHari;
         TextView textViewTipe;
         TextView textViewKategori;
         TextView textViewJumlah;
@@ -48,8 +59,8 @@ public class TransaksiAdapter extends FirestoreRecyclerAdapter<TransaksiModel, T
             super(itemView);
 
             textViewTanggal = itemView.findViewById(R.id.textViewTanggal);
-            textViewBulan = itemView.findViewById(R.id.textViewBulan);
-            textViewTahun = itemView.findViewById(R.id.textViewTahun);
+            textViewBulanTahun = itemView.findViewById(R.id.textViewBulanTahun);
+            textViewHari = itemView.findViewById(R.id.textViewHari);
             textViewTipe = itemView.findViewById(R.id.textViewTipe);
             textViewKategori = itemView.findViewById(R.id.textViewKategori);
             textViewJumlah = itemView.findViewById(R.id.textViewJumlah);
