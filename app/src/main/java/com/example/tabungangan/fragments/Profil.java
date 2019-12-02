@@ -92,6 +92,7 @@ public class Profil extends Fragment implements View.OnClickListener {
                             tv_nama.setText((String) document.getData().get("nama"));
                             tv_saldo.setText(Long.toString((Long) document.getData().get("saldo")));
                             tv_email.setText((String) document.getData().get("email"));
+                            tv_phoneNumber.setText((String) document.getData().get("phoneNumber"));
                         }
                     }
                 });
