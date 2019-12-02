@@ -8,15 +8,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.anychart.APIlib;
 import com.example.tabungangan.R;
@@ -28,61 +24,30 @@ import com.anychart.chart.common.dataentry.ValueDataEntry;
 import com.anychart.chart.common.listener.Event;
 import com.anychart.chart.common.listener.ListenersInterface;
 import com.anychart.charts.Pie;
-import com.anychart.enums.Align;
-import com.anychart.enums.LegendLayout;
-import com.example.tabungangan.adapters.TransaksiAdapter;
 import com.example.tabungangan.helpers.MonthYearPicker;
-import com.example.tabungangan.models.TransaksiModel;
-import com.firebase.ui.firestore.FirestoreRecyclerOptions;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.Query;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-//import com.anychart.sample.R;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 public class Ringkasan extends Fragment {
     private static FirebaseAuth auth;
     private static FirebaseFirestore db = FirebaseFirestore.getInstance();
     private static CollectionReference transaksiRef = db.collection("transaksi");
-    private Query query;
-    private FirestoreRecyclerOptions<TransaksiModel> options;
-
-    private TransaksiAdapter adapter;
-    private RecyclerView recyclerView;
-    private TextView tv_jumlah_pengeluaran;
-    private TextView tv_jumlah_pemasukan;
-    private TextView tv_total_transaksi;
     private Button btn_bulan_tahun;
-    private FloatingActionButton floating_btn_tambah_transaksi;
 
     private String bulan;
     private String tahun;
     private String temp_bulan_dan_tahun;
     private String[] bulan_dan_tahun;
-
-    private String tempJumlahPengeluaran;
-    private String tempJumlahPemasukan;
     private static int [] pemasukan = new int[4];
     private static int [] pengeluaran = new int[7];
-
-
-
-    String bulanSekaran;
-    String tahunSekarang;
-
-    private int jumlahPemasukan;
-    private int jumlahPengeluaran;
 
     /**
      * Kategori Pemasukan: Gaji, Tunjangan, Bonus, dan Lain-lain;
@@ -116,17 +81,6 @@ public class Ringkasan extends Fragment {
         bulan = Integer.toString(Calendar.getInstance().get(Calendar.MONTH)+1);
         tahun = Integer.toString(Calendar.getInstance().get(Calendar.YEAR));
 
-//        Toast.makeText(Ringkasan.this.getContext(), bulan+"/"+tahun, Toast.LENGTH_SHORT).show();
-
-
-
-        Log.d("Bulan tahun", String.valueOf(bulan)+" "+String.valueOf(tahun));
-
-        Log.d("Pemasukan char indeks 0", Integer.toString(pemasukan[0]));
-        Log.d("Pemasukan char indeks 1", String.valueOf(pemasukan[1]));
-        Log.d("Pemasukan char indeks 2", String.valueOf(pemasukan[2]));
-        Log.d("Pemasukan char indeks 3", String.valueOf(pemasukan[3]));
-
         List<DataEntry> data_pemasukan = new ArrayList<>();
         data_pemasukan.add(new ValueDataEntry("Gaji", pemasukan[0]));
         data_pemasukan.add(new ValueDataEntry("Tunjangan", pemasukan[1]));
@@ -138,8 +92,6 @@ public class Ringkasan extends Fragment {
         pie_pemasukan.title("PEMASUKAN");
 
         chartPemasukan.setChart(pie_pemasukan);
-
-
 
         final AnyChartView chartPengeluaran = view.findViewById(R.id.any_chart_view_pengeluaran);
         APIlib.getInstance().setActiveAnyChartView(chartPengeluaran);
@@ -158,7 +110,6 @@ public class Ringkasan extends Fragment {
          * Kategori Pengeluaran: Makanan, Belanja, Hobi, Transportasi, Kesehatan, Pendidikan, dan Lain-lain;
          *
          * */
-
 
         List<DataEntry> data_pengeluaran = new ArrayList<>();
         data_pengeluaran.add(new ValueDataEntry("Makanan", pengeluaran[0]));
@@ -201,17 +152,15 @@ public class Ringkasan extends Fragment {
                         }
                         tahun = bulan_dan_tahun[1];
                         getPemasukan(bulan, tahun);
+                        getPengeluaran(bulan, tahun);
                     }
                 });
-                getPemasukan(bulan, tahun);
-                getPengeluaran(bulan, tahun);
             }
         });
 
     }
 
     public static void getPemasukan(String bulan, String tahun){
-//        long [] pemasukan = new long[]{0,0,0,0};
         pemasukan [0] = 0;
         pemasukan [1] = 0;
         pemasukan [2] = 0;
@@ -230,7 +179,6 @@ public class Ringkasan extends Fragment {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-//                            Log.d("Data", (String) document.getData().get("tipe"));
                             if(document.getData().get("tipe").equals("Pemasukan") && document.getData().get("kategori").equals("Gaji")){
                                 Log.d("masukdata", String.valueOf(document.getData().get("jumlah")));
                                 pemasukan[0] = pemasukan[0] + Integer.parseInt((String) document.getData().get("jumlah"));
@@ -245,28 +193,11 @@ public class Ringkasan extends Fragment {
                                 pemasukan[3] =pemasukan[3] + Integer.parseInt((String) document.getData().get("jumlah"));
                             }
                         }
-
-                        Log.d("Pemasukan indeks 0", Integer.toString(pemasukan[0]));
-                        Log.d("Pemasukan indeks 1", String.valueOf(pemasukan[1]));
-                        Log.d("Pemasukan indeks 2", String.valueOf(pemasukan[2]));
-                        Log.d("Pemasukan indeks 3", String.valueOf(pemasukan[3]));
-
-
-//                        Log.d("Pemasukan indeks 0", String.valueOf(pemasukan[0]));
-//                        Log.d("Pemasukan indeks 1", String.valueOf(pemasukan[1]));
-//                        Log.d("Pemasukan indeks 2", String.valueOf(pemasukan[2]));
-//                        Log.d("Pemasukan indeks 3", String.valueOf(pemasukan[3]));
-
-//                        tv_jumlah_pengeluaran.setText(formatRupiah.format(jumlahPengeluaran));
-//                        tv_jumlah_pemasukan.setText(formatRupiah.format(jumlahPemasukan));
-//                        tv_total_transaksi.setText(formatRupiah.format(jumlahPemasukan-jumlahPengeluaran));
                     }
                 });
-
     }
 
     public static void getPengeluaran(String bulan, String tahun){
-//        long [] pemasukan = new long[]{0,0,0,0};
         pengeluaran [0] = 0;
         pengeluaran [1] = 0;
         pengeluaran [2] = 0;
@@ -290,7 +221,6 @@ public class Ringkasan extends Fragment {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-//                            Log.d("Data", (String) document.getData().get("tipe"));
                             if(document.getData().get("tipe").equals("Pengeluaran") && document.getData().get("kategori").equals("Makanan")){
                                 Log.d("masukdata", String.valueOf(document.getData().get("jumlah")));
                                 pengeluaran[0] = pengeluaran[0] + Integer.parseInt((String) document.getData().get("jumlah"));
@@ -298,43 +228,23 @@ public class Ringkasan extends Fragment {
                             else if(document.getData().get("tipe").equals("Pengeluaran") && document.getData().get("kategori").equals("Belanja")){
                                 pengeluaran[1] = pengeluaran[1] + Integer.parseInt((String) document.getData().get("jumlah"));
                             }
-                            else if(document.getData().get("tipe").equals("Pemasukan") && document.getData().get("kategori").equals("Hobi")){
+                            else if(document.getData().get("tipe").equals("Pengeluaran") && document.getData().get("kategori").equals("Hobi")){
                                 pengeluaran[2] = pengeluaran[2] + Integer.parseInt((String) document.getData().get("jumlah"));
                             }
-                            else if(document.getData().get("tipe").equals("Pemasukan") && document.getData().get("kategori").equals("Transportasi")){
+                            else if(document.getData().get("tipe").equals("Pengeluaran") && document.getData().get("kategori").equals("Transportasi")){
                                 pengeluaran[3] =pengeluaran[3] + Integer.parseInt((String) document.getData().get("jumlah"));
                             }
                             else if(document.getData().get("tipe").equals("Pengeluaran") && document.getData().get("kategori").equals("Kesehatan")){
                                 pengeluaran[4] = pengeluaran[4] + Integer.parseInt((String) document.getData().get("jumlah"));
                             }
-                            else if(document.getData().get("tipe").equals("Pemasukan") && document.getData().get("kategori").equals("Pendidikan")){
+                            else if(document.getData().get("tipe").equals("Pengeluaran") && document.getData().get("kategori").equals("Pendidikan")){
                                 pengeluaran[5] = pengeluaran[5] + Integer.parseInt((String) document.getData().get("jumlah"));
                             }
-                            else if(document.getData().get("tipe").equals("Pemasukan") && document.getData().get("kategori").equals("Lain-lain")){
+                            else if(document.getData().get("tipe").equals("Pengeluaran") && document.getData().get("kategori").equals("Lain-lain")){
                                 pengeluaran[6] =pengeluaran[6] + Integer.parseInt((String) document.getData().get("jumlah"));
                             }
                         }
-
-                        Log.d("Pemasukan indeks 0", Integer.toString(pemasukan[0]));
-                        Log.d("Pemasukan indeks 1", String.valueOf(pemasukan[1]));
-                        Log.d("Pemasukan indeks 2", String.valueOf(pemasukan[2]));
-                        Log.d("Pemasukan indeks 3", String.valueOf(pemasukan[3]));
-
-
-//                        Log.d("Pemasukan indeks 0", String.valueOf(pemasukan[0]));
-//                        Log.d("Pemasukan indeks 1", String.valueOf(pemasukan[1]));
-//                        Log.d("Pemasukan indeks 2", String.valueOf(pemasukan[2]));
-//                        Log.d("Pemasukan indeks 3", String.valueOf(pemasukan[3]));
-
-//                        tv_jumlah_pengeluaran.setText(formatRupiah.format(jumlahPengeluaran));
-//                        tv_jumlah_pemasukan.setText(formatRupiah.format(jumlahPemasukan));
-//                        tv_total_transaksi.setText(formatRupiah.format(jumlahPemasukan-jumlahPengeluaran));
                     }
                 });
-
     }
-
-
-
-
 }
