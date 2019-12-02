@@ -87,12 +87,16 @@ public class PopUp extends AppCompatActivity implements View.OnClickListener {
                     public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
                         for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
                             if (dataPengurang < 0){
-                                Toast.makeText(getBaseContext(), "Nominal Yang Dimasukan Kebanyakan", Toast.LENGTH_LONG).show();
+                                Toast.makeText(getBaseContext(), "Nominal Yang Dimasukan Berlebihan", Toast.LENGTH_LONG).show();
                             }
                             else if (dataPengurang == 0){
+                                wishlistRef.document(document.getId()).update("uang", Integer.toString(dataPengurang));
                                 wishlistRef.document(document.getId()).update("status", "Terpenuhi");
+                            }else if (dataPengurang >= 0){
+                                wishlistRef.document(document.getId()).update("status", "Dalam Proses");
+                                wishlistRef.document(document.getId()).update("uang", Integer.toString(dataPengurang));
+
                             }
-                            wishlistRef.document(document.getId()).update("uang", Integer.toString(dataPengurang));
                         }
                     }
                 });

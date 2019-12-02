@@ -39,6 +39,7 @@ public class WishlistAdapter extends FirestoreRecyclerAdapter<WishlistModel, Wis
     holder.textViewWishlist.setText(model.getWish());
     holder.textViewSisaHari.setText(model.getTanggalMulai());
     holder.textViewtglAkhir.setText(model.getTanggalAkhir());
+    holder.textViewStatus.setText(model.getStatus());
 
     holder.clickwish.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -66,6 +67,7 @@ public class WishlistAdapter extends FirestoreRecyclerAdapter<WishlistModel, Wis
         TextView textViewWishlist;
         TextView textViewJumlahUang;
         TextView textViewtglAkhir;
+        TextView textViewStatus;
         ConstraintLayout clickwish;
 
 
@@ -75,6 +77,7 @@ public class WishlistAdapter extends FirestoreRecyclerAdapter<WishlistModel, Wis
             textViewSisaHari = itemView.findViewById(R.id.textviewsisahari);
             textViewWishlist = itemView.findViewById(R.id.textviewwishlist);
             textViewJumlahUang = itemView.findViewById(R.id.textviewjumlahuang);
+            textViewStatus = itemView.findViewById(R.id.statusCek);
             clickwish = itemView.findViewById(R.id.clickwish);
         }
     }

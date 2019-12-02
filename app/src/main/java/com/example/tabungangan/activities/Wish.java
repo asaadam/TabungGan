@@ -17,6 +17,7 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -40,15 +41,17 @@ import java.util.Locale;
 
 public class Wish extends AppCompatActivity implements View.OnClickListener {
     private ImageButton back;
+    private String status;
     private FirebaseUser user;
     private static final String TAG = "WishList";
     private DatePickerDialog datePickerDialog;
     private SimpleDateFormat dateFormatter;
-    private TextView tvDateResult, endDate;
+    private TextView tvDateResult, endDate,stas;
     private EditText wishInput, uangInput;
     private Button btDatestar,btDateend,submit;
     private FirebaseAuth mAuth;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private CollectionReference wishlistRef = db.collection("wishlist");
 
 
     @Override
@@ -95,6 +98,7 @@ public class Wish extends AppCompatActivity implements View.OnClickListener {
                 showDateDialog(endDate);
                 break;
             case R.id.submit_wishlist:
+                validateForm();
                 insertData();
                 finish();
                 break;
@@ -161,11 +165,14 @@ public class Wish extends AppCompatActivity implements View.OnClickListener {
 
         return valid;
     }
+
     private void insertData(){
+        status = "Masih Proses";
         WishlistModel wishmu = new WishlistModel(user.getUid(),tvDateResult.getText().toString(),
                 endDate.getText().toString(),
                 wishInput.getEditableText().toString(),
-                uangInput.getEditableText().toString()
+                uangInput.getEditableText().toString(),
+                status
                 );
         db.collection("wishlist").add(wishmu)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
