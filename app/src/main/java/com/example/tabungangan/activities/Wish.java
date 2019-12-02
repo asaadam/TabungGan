@@ -16,6 +16,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 
@@ -39,7 +40,7 @@ import java.util.Locale;
 
 public class Wish extends AppCompatActivity implements View.OnClickListener {
     private ImageButton back;
-    private Fragment Target;
+    private FirebaseUser user;
     private static final String TAG = "WishList";
     private DatePickerDialog datePickerDialog;
     private SimpleDateFormat dateFormatter;
@@ -57,12 +58,15 @@ public class Wish extends AppCompatActivity implements View.OnClickListener {
         back = findViewById(R.id.backbtn);
         back.setOnClickListener(this);
 
+
         dateFormatter = new SimpleDateFormat("dd-MM-yyyy", Locale.US);
         //Text
         tvDateResult = findViewById(R.id.textviewstartDate);
         endDate = findViewById(R.id.textviewendDate);
-        wishInput = findViewById(R.id.wishlist);
-        uangInput = findViewById(R.id.moneywish);
+        wishInput = findViewById(R.id.inputWish);
+        uangInput = findViewById(R.id.inputUang);
+        mAuth = FirebaseAuth.getInstance();
+        user = mAuth.getCurrentUser();
         //Button
         btDatestar = findViewById(R.id.startDate);
         btDateend = findViewById(R.id.endDate);
@@ -73,7 +77,6 @@ public class Wish extends AppCompatActivity implements View.OnClickListener {
         btDatestar.setOnClickListener(this);
 
 
-        mAuth = FirebaseAuth.getInstance();
 
 
 
@@ -83,9 +86,7 @@ public class Wish extends AppCompatActivity implements View.OnClickListener {
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.backbtn:
-                Intent back = new Intent(this, MainActivity.class);
-                back.putExtra("frgToLoad", R.id.navigation_transaksi);
-                startActivity(back);
+                finish();
                 break;
             case R.id.startDate:
                 showDateDialog(tvDateResult);
@@ -94,7 +95,8 @@ public class Wish extends AppCompatActivity implements View.OnClickListener {
                 showDateDialog(endDate);
                 break;
             case R.id.submit_wishlist:
-
+                insertData();
+                finish();
                 break;
 
         }
@@ -159,10 +161,12 @@ public class Wish extends AppCompatActivity implements View.OnClickListener {
 
         return valid;
     }
-    private void insertData(String dateStart, String dateEnd, String wish, int uang){
-        String uuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
-        WishlistModel wishmu = new WishlistModel(tvDateResult.getText().toString(), endDate.getText().toString(),
-                wishInput.getEditableText().toString(), uangInput.getEditableText().toString());
+    private void insertData(){
+        WishlistModel wishmu = new WishlistModel(user.getUid(),tvDateResult.getText().toString(),
+                endDate.getText().toString(),
+                wishInput.getEditableText().toString(),
+                uangInput.getEditableText().toString()
+                );
         db.collection("wishlist").add(wishmu)
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override

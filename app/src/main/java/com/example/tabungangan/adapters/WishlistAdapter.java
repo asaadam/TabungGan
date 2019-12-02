@@ -10,6 +10,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.tabungangan.R;
@@ -35,7 +36,8 @@ public class WishlistAdapter extends FirestoreRecyclerAdapter<WishlistModel, Wis
     protected void onBindViewHolder(@NonNull final WishlistHolder holder, int position, @NonNull WishlistModel model) {
     holder.textViewJumlahUang.setText(model.getUang());
     holder.textViewWishlist.setText(model.getWish());
-    holder.textViewSisaHari.setText(model.getTanggalAkhir());
+    holder.textViewSisaHari.setText(model.getTanggalMulai());
+    holder.textViewtglAkhir.setText(model.getTanggalAkhir());
 
     holder.clickwish.setOnClickListener(new View.OnClickListener() {
         @Override
@@ -43,7 +45,6 @@ public class WishlistAdapter extends FirestoreRecyclerAdapter<WishlistModel, Wis
             Context context = holder.textViewJumlahUang.getContext();
             Intent toPop= new Intent(context, PopUp.class);
             context.startActivity(toPop);
-
         }
     });
     }
@@ -61,12 +62,13 @@ public class WishlistAdapter extends FirestoreRecyclerAdapter<WishlistModel, Wis
         TextView textViewSisaHari;
         TextView textViewWishlist;
         TextView textViewJumlahUang;
-        LinearLayout clickwish;
+        TextView textViewtglAkhir;
+        ConstraintLayout clickwish;
 
 
         public WishlistHolder(View itemView) {
             super(itemView);
-
+            textViewtglAkhir = itemView.findViewById(R.id.textviewakhirtanggal);
             textViewSisaHari = itemView.findViewById(R.id.textviewsisahari);
             textViewWishlist = itemView.findViewById(R.id.textviewwishlist);
             textViewJumlahUang = itemView.findViewById(R.id.textviewjumlahuang);

@@ -81,12 +81,11 @@ public class Target extends Fragment implements View.OnClickListener {
     mulai.setOnClickListener(this);
     }
 
-
-
-
     public void setupRecyclerView(){
         query = wishlistRef.whereEqualTo("uuid",auth.getUid())
-                .orderBy("wish", Query.Direction.ASCENDING);
+                .orderBy("uang", Query.Direction.ASCENDING);
+
+
         options = new FirestoreRecyclerOptions.Builder<WishlistModel>()
                 .setQuery(query, WishlistModel.class)
                 .build();
@@ -95,6 +94,10 @@ public class Target extends Fragment implements View.OnClickListener {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
+    }
+
+    public void setupGetData(){
+
     }
 
     @Override

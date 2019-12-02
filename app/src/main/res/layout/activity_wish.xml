@@ -113,6 +113,7 @@
         app:layout_constraintTop_toBottomOf="@+id/wishlist">
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputUang"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Masukkan nominal"
@@ -139,6 +140,7 @@
 
 
         <com.google.android.material.textfield.TextInputEditText
+            android:id="@+id/inputWish"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="Your Wish"
