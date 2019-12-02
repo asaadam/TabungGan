@@ -21,4 +21,10 @@
     <string name="submitwishlist">Masukan Wishmu</string>
     <string name="wishlist">Masukkan Keinginan</string>
 
+    <array name="kurir">
+        <item>Pilih Kurir</item>
+        <item>JNE REGULER</item>
+        <item>JNE YES</item>
+    </array>
+
 </resources>

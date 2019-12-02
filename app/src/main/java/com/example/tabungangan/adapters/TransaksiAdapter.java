@@ -15,7 +15,12 @@ import com.example.tabungangan.models.TransaksiModel;
 import com.firebase.ui.firestore.FirestoreRecyclerAdapter;
 import com.firebase.ui.firestore.FirestoreRecyclerOptions;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
 public class TransaksiAdapter extends FirestoreRecyclerAdapter<TransaksiModel, TransaksiAdapter.TransaksiHolder> {
+    private Locale localeID = new Locale("in", "ID");
+    private NumberFormat formatRupiah = NumberFormat.getCurrencyInstance(localeID);
 
     NamaHari namaHari = new NamaHari();
 
@@ -30,7 +35,7 @@ public class TransaksiAdapter extends FirestoreRecyclerAdapter<TransaksiModel, T
         holder.textViewHari.setText(namaHari.getNamaHari(model.getHari()));
         holder.textViewTipe.setText(model.getTipe());
         holder.textViewKategori.setText(model.getKategori());
-        holder.textViewJumlah.setText(model.getJumlah());
+        holder.textViewJumlah.setText(formatRupiah.format(Integer.parseInt(model.getJumlah())));
         if(model.getTipe().equals("Pengeluaran")){
             holder.textViewJumlah.setTextColor(Color.RED);
         }
