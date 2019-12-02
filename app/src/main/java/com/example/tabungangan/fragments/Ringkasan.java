@@ -52,9 +52,9 @@ import java.util.Date;
 import java.util.List;
 
 public class Ringkasan extends Fragment {
-    private FirebaseAuth auth;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
-    private CollectionReference transaksiRef = db.collection("transaksi");
+    private static FirebaseAuth auth;
+    private static FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private static CollectionReference transaksiRef = db.collection("transaksi");
     private Query query;
     private FirestoreRecyclerOptions<TransaksiModel> options;
 
@@ -74,6 +74,7 @@ public class Ringkasan extends Fragment {
     private String tempJumlahPengeluaran;
     private String tempJumlahPemasukan;
     private static int [] pemasukan = new int[4];
+    private static int [] pengeluaran = new int[7];
 
 
 
@@ -117,7 +118,9 @@ public class Ringkasan extends Fragment {
 
 //        Toast.makeText(Ringkasan.this.getContext(), bulan+"/"+tahun, Toast.LENGTH_SHORT).show();
 
-        pemasukan = getPemasukan(bulan, tahun);
+
+
+        Log.d("Bulan tahun", String.valueOf(bulan)+" "+String.valueOf(tahun));
 
         Log.d("Pemasukan char indeks 0", Integer.toString(pemasukan[0]));
         Log.d("Pemasukan char indeks 1", String.valueOf(pemasukan[1]));
@@ -132,35 +135,47 @@ public class Ringkasan extends Fragment {
 
         pie_pemasukan.data(data_pemasukan);
 
-        pie_pemasukan.title("Pemasukan Bulan ......");
+        pie_pemasukan.title("PEMASUKAN");
 
         chartPemasukan.setChart(pie_pemasukan);
 
 
 
-//        final AnyChartView chartPengeluaran = view.findViewById(R.id.any_chart_view_pengeluaran);
-//        APIlib.getInstance().setActiveAnyChartView(chartPengeluaran);
-//
-//        final Pie pie_pengeluaran = AnyChart.pie();
-//
-//        pie_pengeluaran.setOnClickListener(new ListenersInterface.OnClickListener() {
-//            @Override
-//            public void onClick(Event event) {
-//                Toast.makeText(Ringkasan.this.getContext(), event.getData().get("x") + ":" + event.getData().get("value"), Toast.LENGTH_SHORT).show();
-//            }
-//        });
-//
-//        List<DataEntry> data_pengeluaran = new ArrayList<>();
-//        data_pengeluaran.add(new ValueDataEntry("Makanan dan Minuman",30000000));
-//        data_pengeluaran.add(new ValueDataEntry("Transportasi",30000000));
-//        data_pengeluaran.add(new ValueDataEntry("Hiburan",25300000));
-//        data_pengeluaran.add(new ValueDataEntry("Lain-lain",10000000));
-//
-//        pie_pengeluaran.data(data_pengeluaran);
-//
-//        pie_pengeluaran.title("Pengeluaran Bulan ......");
-//
-//        chartPengeluaran.setChart(pie_pengeluaran);
+        final AnyChartView chartPengeluaran = view.findViewById(R.id.any_chart_view_pengeluaran);
+        APIlib.getInstance().setActiveAnyChartView(chartPengeluaran);
+
+        final Pie pie_pengeluaran = AnyChart.pie();
+
+        pie_pengeluaran.setOnClickListener(new ListenersInterface.OnClickListener() {
+            @Override
+            public void onClick(Event event) {
+                Toast.makeText(Ringkasan.this.getContext(), event.getData().get("x") + ":" + event.getData().get("value"), Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        /**
+         * Kategori Pemasukan: Gaji, Tunjangan, Bonus, dan Lain-lain;
+         * Kategori Pengeluaran: Makanan, Belanja, Hobi, Transportasi, Kesehatan, Pendidikan, dan Lain-lain;
+         *
+         * */
+
+
+        List<DataEntry> data_pengeluaran = new ArrayList<>();
+        data_pengeluaran.add(new ValueDataEntry("Makanan", pengeluaran[0]));
+
+        data_pengeluaran.add(new ValueDataEntry("Belanja",pengeluaran[1]));
+        data_pengeluaran.add(new ValueDataEntry("Hobi",pengeluaran[2]));
+        data_pengeluaran.add(new ValueDataEntry("Transportasi",pengeluaran[3]));
+        data_pengeluaran.add(new ValueDataEntry("Kesehatan",pengeluaran[4]));
+        data_pengeluaran.add(new ValueDataEntry("Pendidikan",pengeluaran[5]));
+        data_pengeluaran.add(new ValueDataEntry("Lain-lain",pengeluaran[6]));
+
+
+        pie_pengeluaran.data(data_pengeluaran);
+
+        pie_pengeluaran.title("PENGELUARAN");
+
+        chartPengeluaran.setChart(pie_pengeluaran);
         btn_bulan_tahun = view.findViewById(R.id.btn_bulan_tahun);
 
         btn_bulan_tahun.setOnClickListener(new View.OnClickListener() {
@@ -188,12 +203,14 @@ public class Ringkasan extends Fragment {
                         getPemasukan(bulan, tahun);
                     }
                 });
+                getPemasukan(bulan, tahun);
+                getPengeluaran(bulan, tahun);
             }
         });
 
     }
 
-    public int[] getPemasukan(String bulan, String tahun){
+    public static void getPemasukan(String bulan, String tahun){
 //        long [] pemasukan = new long[]{0,0,0,0};
         pemasukan [0] = 0;
         pemasukan [1] = 0;
@@ -246,8 +263,78 @@ public class Ringkasan extends Fragment {
                     }
                 });
 
-        return pemasukan;
     }
+
+    public static void getPengeluaran(String bulan, String tahun){
+//        long [] pemasukan = new long[]{0,0,0,0};
+        pengeluaran [0] = 0;
+        pengeluaran [1] = 0;
+        pengeluaran [2] = 0;
+        pengeluaran [3] = 0;
+        pengeluaran [4] = 0;
+        pengeluaran [5] = 0;
+        pengeluaran [6] = 0;
+
+        /**
+         *    * Kategori Pengeluaran: Makanan, Belanja, Hobi, Transportasi, Kesehatan, Pendidikan, dan Lain-lain;
+         * Pemasukan [0] : Gaji
+         * Pemasukan [1] : Tunjangan
+         * Pemasukan [2] : Bonus
+         * Pemasukan [3] : Lain-lain
+         * */
+
+        transaksiRef.whereEqualTo("uuid",auth.getUid())
+                .whereEqualTo("bulan", bulan)
+                .whereEqualTo("tahun", tahun)
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot queryDocumentSnapshots, @Nullable FirebaseFirestoreException e) {
+                        for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
+//                            Log.d("Data", (String) document.getData().get("tipe"));
+                            if(document.getData().get("tipe").equals("Pengeluaran") && document.getData().get("kategori").equals("Makanan")){
+                                Log.d("masukdata", String.valueOf(document.getData().get("jumlah")));
+                                pengeluaran[0] = pengeluaran[0] + Integer.parseInt((String) document.getData().get("jumlah"));
+                            }
+                            else if(document.getData().get("tipe").equals("Pengeluaran") && document.getData().get("kategori").equals("Belanja")){
+                                pengeluaran[1] = pengeluaran[1] + Integer.parseInt((String) document.getData().get("jumlah"));
+                            }
+                            else if(document.getData().get("tipe").equals("Pemasukan") && document.getData().get("kategori").equals("Hobi")){
+                                pengeluaran[2] = pengeluaran[2] + Integer.parseInt((String) document.getData().get("jumlah"));
+                            }
+                            else if(document.getData().get("tipe").equals("Pemasukan") && document.getData().get("kategori").equals("Transportasi")){
+                                pengeluaran[3] =pengeluaran[3] + Integer.parseInt((String) document.getData().get("jumlah"));
+                            }
+                            else if(document.getData().get("tipe").equals("Pengeluaran") && document.getData().get("kategori").equals("Kesehatan")){
+                                pengeluaran[4] = pengeluaran[4] + Integer.parseInt((String) document.getData().get("jumlah"));
+                            }
+                            else if(document.getData().get("tipe").equals("Pemasukan") && document.getData().get("kategori").equals("Pendidikan")){
+                                pengeluaran[5] = pengeluaran[5] + Integer.parseInt((String) document.getData().get("jumlah"));
+                            }
+                            else if(document.getData().get("tipe").equals("Pemasukan") && document.getData().get("kategori").equals("Lain-lain")){
+                                pengeluaran[6] =pengeluaran[6] + Integer.parseInt((String) document.getData().get("jumlah"));
+                            }
+                        }
+
+                        Log.d("Pemasukan indeks 0", Integer.toString(pemasukan[0]));
+                        Log.d("Pemasukan indeks 1", String.valueOf(pemasukan[1]));
+                        Log.d("Pemasukan indeks 2", String.valueOf(pemasukan[2]));
+                        Log.d("Pemasukan indeks 3", String.valueOf(pemasukan[3]));
+
+
+//                        Log.d("Pemasukan indeks 0", String.valueOf(pemasukan[0]));
+//                        Log.d("Pemasukan indeks 1", String.valueOf(pemasukan[1]));
+//                        Log.d("Pemasukan indeks 2", String.valueOf(pemasukan[2]));
+//                        Log.d("Pemasukan indeks 3", String.valueOf(pemasukan[3]));
+
+//                        tv_jumlah_pengeluaran.setText(formatRupiah.format(jumlahPengeluaran));
+//                        tv_jumlah_pemasukan.setText(formatRupiah.format(jumlahPemasukan));
+//                        tv_total_transaksi.setText(formatRupiah.format(jumlahPemasukan-jumlahPengeluaran));
+                    }
+                });
+
+    }
+
+
 
 
 }
