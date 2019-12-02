@@ -2,17 +2,21 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
     <item
         android:id="@+id/navigation_ringkasan"
+        android:icon="@drawable/ic_pie_chart"
         android:title="Ringkasan" />
 
     <item
         android:id="@+id/navigation_transaksi"
+        android:icon="@drawable/ic_transaksi"
         android:title="Transaksi" />
 
     <item
         android:id="@+id/navigation_target"
+        android:icon="@drawable/ic_target"
         android:title="Target" />
 
     <item
         android:id="@+id/navigation_profil"
+        android:icon="@drawable/ic_profil"
         android:title="Profil" />
 </menu>

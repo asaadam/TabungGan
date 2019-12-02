@@ -3,6 +3,7 @@ package com.example.tabungangan.adapters;
 
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,17 +34,20 @@ public class WishlistAdapter extends FirestoreRecyclerAdapter<WishlistModel, Wis
     }
 
     @Override
-    protected void onBindViewHolder(@NonNull final WishlistHolder holder, int position, @NonNull WishlistModel model) {
+    protected void onBindViewHolder(@NonNull final WishlistHolder holder, final int position, @NonNull WishlistModel model) {
     holder.textViewJumlahUang.setText(model.getUang());
     holder.textViewWishlist.setText(model.getWish());
     holder.textViewSisaHari.setText(model.getTanggalMulai());
     holder.textViewtglAkhir.setText(model.getTanggalAkhir());
+    holder.textViewStatus.setText(model.getStatus());
 
     holder.clickwish.setOnClickListener(new View.OnClickListener() {
         @Override
         public void onClick(View v) {
             Context context = holder.textViewJumlahUang.getContext();
             Intent toPop= new Intent(context, PopUp.class);
+            toPop.putExtra("uang", holder.textViewJumlahUang.getText().toString());
+            toPop.putExtra("nama", holder.textViewWishlist.getText().toString());
             context.startActivity(toPop);
         }
     });
@@ -63,6 +67,7 @@ public class WishlistAdapter extends FirestoreRecyclerAdapter<WishlistModel, Wis
         TextView textViewWishlist;
         TextView textViewJumlahUang;
         TextView textViewtglAkhir;
+        TextView textViewStatus;
         ConstraintLayout clickwish;
 
 
@@ -72,6 +77,7 @@ public class WishlistAdapter extends FirestoreRecyclerAdapter<WishlistModel, Wis
             textViewSisaHari = itemView.findViewById(R.id.textviewsisahari);
             textViewWishlist = itemView.findViewById(R.id.textviewwishlist);
             textViewJumlahUang = itemView.findViewById(R.id.textviewjumlahuang);
+            textViewStatus = itemView.findViewById(R.id.statusCek);
             clickwish = itemView.findViewById(R.id.clickwish);
         }
     }

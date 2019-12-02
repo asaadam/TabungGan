@@ -19,6 +19,8 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.TextView;
+import android.widget.Toast;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Locale;
@@ -76,7 +78,6 @@ public class Target extends Fragment implements View.OnClickListener {
     recyclerView = view.findViewById(R.id.rvwish);
 
     mulai = view.findViewById(R.id.floating_wishlist_button);
-
     setupRecyclerView();
     mulai.setOnClickListener(this);
     }
@@ -84,7 +85,6 @@ public class Target extends Fragment implements View.OnClickListener {
     public void setupRecyclerView(){
         query = wishlistRef.whereEqualTo("uuid",auth.getUid())
                 .orderBy("uang", Query.Direction.ASCENDING);
-
 
         options = new FirestoreRecyclerOptions.Builder<WishlistModel>()
                 .setQuery(query, WishlistModel.class)
@@ -94,10 +94,6 @@ public class Target extends Fragment implements View.OnClickListener {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
         recyclerView.setAdapter(adapter);
-    }
-
-    public void setupGetData(){
-
     }
 
     @Override
@@ -117,7 +113,6 @@ public class Target extends Fragment implements View.OnClickListener {
                 Intent getWish = new Intent(getContext(), Wish.class);
                 startActivity(getWish);
                 break;
-        }}
-
-
+        }
     }
+}
