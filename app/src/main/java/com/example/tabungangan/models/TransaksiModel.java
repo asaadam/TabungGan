@@ -1,6 +1,7 @@
 package com.example.tabungangan.models;
 
 public class TransaksiModel {
+    private String hari;
     private String tanggal;
     private String bulan;
     private String tahun;
@@ -11,13 +12,18 @@ public class TransaksiModel {
     public TransaksiModel() {}
 
 
-    public TransaksiModel(String tanggal, String bulan, String tahun, String tipe, String kategori, String jumlah) {
+    public TransaksiModel(String hari, String tanggal, String bulan, String tahun, String tipe, String kategori, String jumlah) {
+        this.hari = hari;
         this.tanggal = tanggal;
         this.bulan = bulan;
         this.tahun = tahun;
         this.tipe = tipe;
         this.kategori = kategori;
         this.jumlah = jumlah;
+    }
+
+    public String getHari() {
+        return hari;
     }
 
     public String getTanggal() {

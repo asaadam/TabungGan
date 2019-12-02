@@ -7,6 +7,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.NumberPicker;
 
 import androidx.annotation.NonNull;
@@ -37,6 +38,8 @@ public class MonthYearPicker extends DialogFragment {
         View dialog = inflater.inflate(R.layout.helper_month_year_picker, null);
         final NumberPicker monthPicker = (NumberPicker) dialog.findViewById(R.id.picker_month);
         final NumberPicker yearPicker = (NumberPicker) dialog.findViewById(R.id.picker_year);
+        Button btn_batal = dialog.findViewById(R.id.btn_batal);
+        Button btn_oke = dialog.findViewById(R.id.btn_oke);
 
         monthPicker.setMinValue(1);
         monthPicker.setMaxValue(12);
@@ -47,19 +50,23 @@ public class MonthYearPicker extends DialogFragment {
         yearPicker.setMaxValue(year);
         yearPicker.setValue(year);
 
-        builder.setView(dialog)
-                // Add action buttons
-                .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int id) {
-                        listener.onDateSet(null, yearPicker.getValue(), monthPicker.getValue(), 0);
-                    }
-                })
-                .setNegativeButton(R.string.batal, new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int id) {
-                        MonthYearPicker.this.getDialog().cancel();
-                    }
-                });
-        return builder.create();
+        builder.setView(dialog);
+
+        btn_batal.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                MonthYearPicker.this.getDialog().cancel();
+            }
+        });
+
+        btn_oke.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                listener.onDateSet(null, yearPicker.getValue(), monthPicker.getValue(), 0);
+                MonthYearPicker.this.getDialog().dismiss();
+            }
+        });
+
+        return builder.show();
     }
 }

@@ -46,9 +46,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tv_pemasukan_nilai"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10000000"
+            android:text="0"
             app:layout_constraintEnd_toEndOf="@+id/tv_pemasukan_text"
             app:layout_constraintStart_toStartOf="@+id/tv_pemasukan_text"
             app:layout_constraintTop_toBottomOf="@+id/tv_pemasukan_text" />
@@ -82,9 +83,10 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
+            android:id="@+id/tv_total_nilai"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="10000000"
+            android:text="0"
             app:layout_constraintEnd_toEndOf="@+id/tv_total_text"
             app:layout_constraintStart_toStartOf="@+id/tv_total_text"
             app:layout_constraintTop_toBottomOf="@+id/tv_total_text" />
@@ -113,17 +115,18 @@
         android:id="@+id/rv_transaksi_list"
         android:layout_width="match_parent"
         android:layout_height="0dp"
+        android:layout_marginStart="33dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="33dp"
         android:layout_weight="1"
         android:scrollbars="vertical"
-        android:layout_marginStart="33dp"
-        android:layout_marginEnd="33dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/button_bulan_tahun"/>
+        app:layout_constraintTop_toBottomOf="@+id/button_bulan_tahun" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/floating_action_button"
+        android:id="@+id/floating_btn_tambah_transaksi"
         android:backgroundTint="@color/colorPrimary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

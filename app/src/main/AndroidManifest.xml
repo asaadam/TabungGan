@@ -3,8 +3,7 @@
     xmlns:dist="http://schemas.android.com/apk/distribution"
     xmlns:tools="http://schemas.android.com/tools"
     package="com.example.tabungangan"
-    tools:ignore="GoogleAppIndexingWarning"
-    >
+    tools:ignore="GoogleAppIndexingWarning">
 
     <application
         android:allowBackup="true"
@@ -13,17 +12,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.Register"/>
-        <activity android:name=".activities.Login" >
+        <activity android:name=".activities.TambahTransaksiActivity"></activity>
+        <activity android:name=".activities.Register" />
+        <activity android:name=".activities.Login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".activities.MainActivity">
-
-        </activity>
+        <activity android:name=".activities.MainActivity"></activity>
     </application>
 
     <dist:module dist:instant="true" />
