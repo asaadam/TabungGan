@@ -30,5 +30,9 @@ public class WishlistModel {
     }
 
     public String getUuid() { return uuid; }
+
+    public void setUang(String uang) {
+        this.uang = uang;
+    }
 }
 
